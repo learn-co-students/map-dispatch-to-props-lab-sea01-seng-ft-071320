@@ -1,54 +1,60 @@
-import React, { Component } from 'react';
-import { addRestaurant } from '../actions/restaurants';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { addRestaurant } from "../actions/restaurants";
+import { connect } from "react-redux";
 
 export class RestaurantInput extends Component {
-
   state = {
-    name: '',
-    location: ''
-  }
+    name: "",
+    location: "",
+  };
 
-  handleOnNameChange = event => {
+  handleOnNameChange = (event) => {
     this.setState({
-      name: event.target.value
+      name: event.target.value,
     });
-  }
+  };
 
-  handleOnLocationChange = event => {
+  handleOnLocationChange = (event) => {
     this.setState({
-      location: event.target.value
+      location: event.target.value,
     });
-  }
+  };
 
-  handleOnSubmit = event => {
+  handleOnSubmit = (event) => {
     event.preventDefault();
-    // add missing code
-  }
+    this.props.addRestaurant(this.state);
+  };
 
   render() {
-    return(
-      <form onSubmit={(event) => this.handleOnSubmit(event)}>
+    return (
+      <form onSubmit={this.handleOnSubmit}>
         <p>
           <input
             type="text"
-            onChange={(event) => this.handleOnNameChange(event)}
+            onChange={this.handleOnNameChange}
             id="name"
-            placeholder="restaurant name" />
+            placeholder="restaurant name"
+          />
         </p>
         <p>
           <input
             type="text"
-            onChange={(event) => this.handleOnLocationChange(event)}
+            onChange={this.handleOnLocationChange}
             id="location"
-            placeholder="location" />
+            placeholder="location"
+          />
         </p>
         <input type="submit" />
       </form>
     );
   }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addRestaurant: (restaurant) => dispatch(addRestaurant(restaurant)),
+  };
 };
 
-
 //connect this component by wrapping RestaurantInput below
-export default RestaurantInput
+export default connect((state) => state, mapDispatchToProps)(RestaurantInput);
